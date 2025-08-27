@@ -1,7 +1,7 @@
-import Auth from "./Auth";
+import AuthSplit from "./AuthSplit";
 
 const Index = () => {
-  return <Auth />;
+  return <AuthSplit />;
 };
 
 export default Index;

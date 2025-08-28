@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Chrome } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface LoginFormSplitProps {
   onToggleMode: () => void;
@@ -12,10 +13,18 @@ interface LoginFormSplitProps {
 export function LoginFormSplit({ onToggleMode, onForgotPassword }: LoginFormSplitProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password });
+    toast({
+      title: "Login successful!",
+      description: "Welcome back to PodcastAI",
+    });
+    // Navigate to dashboard after successful login
+    setTimeout(() => {
+      window.location.href = "/dashboard";
+    }, 1000);
   };
 
   const handleGoogleLogin = () => {

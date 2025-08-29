@@ -1,279 +1,233 @@
 import { useState } from "react";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { StatsCard } from "@/components/dashboard/StatsCard";
-import { CircularProgress } from "@/components/dashboard/CircularProgress";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Header } from "@/components/layout/Header";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
-  Mic, 
-  Library, 
-  Settings, 
   Play, 
   Download, 
-  Clock, 
-  CheckCircle, 
-  Circle, 
-  Sparkles,
-  Search,
-  Filter,
-  TrendingUp,
+  Eye,
+  Edit,
+  FileText,
   Users,
-  Headphones,
-  FileText
+  Clock,
+  Calendar,
+  RefreshCw,
+  Plus
 } from "lucide-react";
 
 export default function Dashboard() {
   const [podcasts] = useState([
     {
       id: 1,
-      title: "AI and the Future of Work",
-      duration: "12:45",
-      status: "completed",
-      createdAt: "2 days ago",
-      description: "Exploring how artificial intelligence is reshaping the workplace",
-      priority: "high"
+      title: "Fusionex fallout_the sequel - by Emmanuel Samarathisa.pdf",
+      fileSize: "17.2 kB",
+      status: "Pending",
+      date: "Aug 28, 2025, 05:40 AM",
+      category: "general",
+      transcripts: 0,
+      audioFiles: 0
     },
     {
       id: 2,
-      title: "Climate Change Solutions",
-      duration: "8:23",
-      status: "processing", 
-      createdAt: "1 day ago",
-      description: "Innovative approaches to tackling climate challenges",
-      priority: "medium"
-    },
-    {
-      id: 3,
-      title: "Digital Marketing Trends 2025",
-      duration: "15:12",
-      status: "completed",
-      createdAt: "5 hours ago",
-      description: "Latest trends and strategies in digital marketing",
-      priority: "low"
+      title: "Fusionex fallout_the sequel - by Emmanuel Samarathisa.pdf", 
+      fileSize: "17.2 kB",
+      status: "Pending",
+      date: "Aug 27, 2025, 04:57 PM",
+      category: "general",
+      transcripts: 0,
+      audioFiles: 0
     }
   ]);
 
-  const getStatusIcon = (status: string) => {
-    return status === "completed" ? (
-      <CheckCircle className="h-4 w-4 text-green-500" />
-    ) : (
-      <Circle className="h-4 w-4 text-yellow-500" />
-    );
-  };
-
-  const getStatusText = (status: string) => {
-    return status === "completed" ? "Completed" : "Processing";
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case "high": return "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300";
-      case "medium": return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300";
-      case "low": return "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300";
-      default: return "bg-muted text-muted-foreground";
-    }
-  };
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar />
+    <div className="min-h-screen bg-background">
+      <Header />
       
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="flex items-center justify-between p-6">
-            <div>
-              <h1 className="text-2xl font-bold">Welcome Back</h1>
-              <p className="text-muted-foreground">Your smart assistant for seamless productivity</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <Button className="bg-primary hover:bg-primary/90">
-                <Sparkles className="h-4 w-4 mr-2" />
-                Ask AI
-              </Button>
-              <Button variant="outline">Get Task Update</Button>
-              <Button variant="outline">Create Workspace</Button>
-              <Button variant="outline">Connect Apps</Button>
-              <Button variant="ghost" size="icon">
-                <Search className="h-4 w-4" />
-              </Button>
-            </div>
+      <div className="max-w-7xl mx-auto p-6 space-y-8">
+        {/* Welcome Section */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">
+              Welcome back, chien.hui.yee@gmail.com!
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              Manage and organize your AI-generated podcasts
+            </p>
           </div>
-        </header>
-
-        <div className="flex-1 overflow-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-6">
-            {/* Main Content */}
-            <div className="lg:col-span-3 space-y-6">
-              {/* AI Greeting Card */}
-              <Card className="glass-card bg-gradient-to-r from-primary/5 to-accent/5">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h2 className="text-xl font-semibold mb-2">Hello Keira!</h2>
-                      <p className="text-muted-foreground">How can I help you today?</p>
-                      <div className="flex items-center gap-2 mt-4">
-                        <Badge className="bg-green-500/10 text-green-700 dark:text-green-300">8 Progress</Badge>
-                        <Badge className="bg-purple-500/10 text-purple-700 dark:text-purple-300">10 Inquiries</Badge>
-                      </div>
-                    </div>
-                    <div className="hidden md:block">
-                      <div className="w-32 h-20 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg flex items-center justify-center">
-                        <Mic className="h-8 w-8 text-primary" />
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <StatsCard
-                  title="Total Podcasts"
-                  value="456 Podcasts"
-                  change="+12%"
-                  trend="up"
-                  icon={<FileText className="h-6 w-6 text-primary" />}
-                />
-                <StatsCard
-                  title="Completed Podcasts"
-                  value="125 Podcasts"
-                  change="+12%"
-                  trend="up"
-                  icon={<CheckCircle className="h-6 w-6 text-green-500" />}
-                />
-                <StatsCard
-                  title="Ongoing Podcasts"
-                  value="108 Podcasts"
-                  change="+12%"
-                  trend="up"
-                  icon={<Circle className="h-6 w-6 text-yellow-500" />}
-                />
-              </div>
-
-              {/* AI Analytics */}
-              <Card className="glass-card">
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle>AI Analytics</CardTitle>
-                  <Button variant="ghost" size="sm">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Sort
-                  </Button>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <CircularProgress
-                      title="On-Time Completion"
-                      percentage={85}
-                      icon={<CheckCircle className="h-5 w-5 text-green-500" />}
-                      color="stroke-green-500"
-                    />
-                    <CircularProgress
-                      title="Average Generation Time"
-                      percentage={72}
-                      icon={<Clock className="h-5 w-5 text-purple-500" />}
-                      color="stroke-purple-500"
-                    />
-                    <CircularProgress
-                      title="User Satisfaction"
-                      percentage={94}
-                      icon={<TrendingUp className="h-5 w-5 text-blue-500" />}
-                      color="stroke-blue-500"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Right Sidebar */}
-            <div className="space-y-6">
-              {/* All Tasks */}
-              <Card className="glass-card">
-                <CardHeader className="flex flex-row items-center justify-between pb-3">
-                  <CardTitle className="text-lg">All Tasks</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="sm">
-                      <Filter className="h-4 w-4 mr-1" />
-                      Sort
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Not Started</span>
-                    <Badge className="bg-blue-500 text-white">2</Badge>
-                  </div>
-                  
-                  {podcasts.slice(0, 2).map((podcast) => (
-                    <div key={podcast.id} className="p-3 border rounded-lg hover:bg-muted/50 transition-colors">
-                      <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-medium text-sm">{podcast.title}</h4>
-                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                          <span className="text-xs">⋯</span>
-                        </Button>
-                      </div>
-                      <p className="text-xs text-muted-foreground mb-2">{podcast.description}</p>
-                      <div className="flex items-center justify-between text-xs">
-                        <Badge className={getPriorityColor(podcast.priority)}>
-                          {podcast.priority}
-                        </Badge>
-                        <span className="text-muted-foreground">Due: {podcast.createdAt}</span>
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="pt-2">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm font-medium">On Progress</span>
-                      <Badge className="bg-yellow-500 text-white">1</Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Daily Reminders */}
-              <Card className="glass-card">
-                <CardHeader className="flex flex-row items-center justify-between pb-3">
-                  <CardTitle className="text-lg">Daily Reminders</CardTitle>
-                  <Button variant="ghost" size="sm">
-                    <Filter className="h-4 w-4 mr-1" />
-                    Sort
-                  </Button>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="p-3 border rounded-lg">
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="h-2 w-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm font-medium">Check Daily Progress</span>
-                      <Badge className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 ml-auto">High</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">Review tasks and updates daily</p>
-                  </div>
-                  
-                  <div className="p-3 border rounded-lg">
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="h-2 w-2 bg-red-500 rounded-full"></div>
-                      <span className="text-sm font-medium">Provide Feedback Tasks</span>
-                      <Badge className="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300 ml-auto">Low</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">Comments for task improvements</p>
-                  </div>
-                  
-                  <div className="p-3 border rounded-lg">
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="h-2 w-2 bg-yellow-500 rounded-full"></div>
-                      <span className="text-sm font-medium">Set Tomorrow's Goals</span>
-                      <Badge className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300 ml-auto">Medium</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">Plan priorities for next day</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+          <div className="flex items-center gap-3">
+            <Button variant="outline" size="sm">
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Refresh
+            </Button>
+            <Button className="bg-green-600 hover:bg-green-700 text-white" size="sm">
+              <Plus className="h-4 w-4 mr-2" />
+              New Podcast
+            </Button>
+            <Button variant="ghost" size="sm">
+              Logout
+            </Button>
           </div>
         </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <Card className="p-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-blue-500" />
+                <p className="text-sm text-muted-foreground">Total Documents</p>
+              </div>
+              <p className="text-3xl font-bold">2</p>
+            </div>
+          </Card>
+          
+          <Card className="p-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Users className="h-5 w-5 text-purple-500" />
+                <p className="text-sm text-muted-foreground">Total Podcasts</p>
+              </div>
+              <p className="text-3xl font-bold">0</p>
+            </div>
+          </Card>
+          
+          <Card className="p-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Clock className="h-5 w-5 text-orange-500" />
+                <p className="text-sm text-muted-foreground">Total Duration</p>
+              </div>
+              <p className="text-3xl font-bold">0 min</p>
+            </div>
+          </Card>
+          
+          <Card className="p-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-green-500" />
+                <p className="text-sm text-muted-foreground">This Month</p>
+              </div>
+              <p className="text-3xl font-bold">0</p>
+            </div>
+          </Card>
+        </div>
+
+        {/* Podcast Library */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">Podcast Library</CardTitle>
+            <p className="text-muted-foreground">Search, filter, and manage your generated podcasts</p>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Search and Filters */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
+                <Input
+                  placeholder="Search podcasts by title or content..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+              <div className="flex gap-2">
+                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="All Categories" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    <SelectItem value="general">General</SelectItem>
+                    <SelectItem value="business">Business</SelectItem>
+                    <SelectItem value="tech">Technology</SelectItem>
+                  </SelectContent>
+                </Select>
+                
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-32">
+                    <SelectValue placeholder="All Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="processing">Processing</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Podcast Items */}
+            <div className="space-y-4">
+              {podcasts.map((podcast) => (
+                <div key={podcast.id} className="border rounded-lg p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-4 flex-1">
+                      <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <FileText className="h-6 w-6 text-purple-600" />
+                      </div>
+                      
+                      <div className="flex-1 space-y-2">
+                        <h3 className="font-medium text-foreground">{podcast.title}</h3>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          <Badge variant="outline" className="text-xs">
+                            {podcast.status}
+                          </Badge>
+                          <span>{podcast.date}</span>
+                          <Badge variant="secondary" className="text-xs">
+                            {podcast.category}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                          <span>{podcast.fileSize}</span>
+                          <span>{podcast.transcripts} transcripts</span>
+                          <span>{podcast.audioFiles} audio files</span>
+                        </div>
+                        
+                        {/* Progress Bar */}
+                        <div className="w-full">
+                          <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+                            <span>Processing...</span>
+                            <span>Processing...</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-1">
+                            <div className="bg-blue-500 h-1 rounded-full" style={{ width: '35%' }}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2 ml-4">
+                      <Button variant="ghost" size="sm">
+                        <Eye className="h-4 w-4 mr-1" />
+                        View
+                      </Button>
+                      <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
+                        <Edit className="h-4 w-4 mr-1" />
+                        Edit
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <Play className="h-4 w-4 mr-1" />
+                        Play
+                      </Button>
+                      <Button variant="ghost" size="sm" disabled>
+                        <Download className="h-4 w-4 mr-1" />
+                        Download
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
